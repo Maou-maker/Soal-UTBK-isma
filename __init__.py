@@ -1,49 +1,38 @@
-from typing import Any, Optional
+"""Jinja is a template engine written in pure Python. It provides a
+non-XML syntax that supports inline expressions and an optional
+sandboxed environment.
+"""
 
-from .main import (dotenv_values, find_dotenv, get_key, load_dotenv, set_key,
-                   unset_key)
+from .bccache import BytecodeCache as BytecodeCache
+from .bccache import FileSystemBytecodeCache as FileSystemBytecodeCache
+from .bccache import MemcachedBytecodeCache as MemcachedBytecodeCache
+from .environment import Environment as Environment
+from .environment import Template as Template
+from .exceptions import TemplateAssertionError as TemplateAssertionError
+from .exceptions import TemplateError as TemplateError
+from .exceptions import TemplateNotFound as TemplateNotFound
+from .exceptions import TemplateRuntimeError as TemplateRuntimeError
+from .exceptions import TemplatesNotFound as TemplatesNotFound
+from .exceptions import TemplateSyntaxError as TemplateSyntaxError
+from .exceptions import UndefinedError as UndefinedError
+from .loaders import BaseLoader as BaseLoader
+from .loaders import ChoiceLoader as ChoiceLoader
+from .loaders import DictLoader as DictLoader
+from .loaders import FileSystemLoader as FileSystemLoader
+from .loaders import FunctionLoader as FunctionLoader
+from .loaders import ModuleLoader as ModuleLoader
+from .loaders import PackageLoader as PackageLoader
+from .loaders import PrefixLoader as PrefixLoader
+from .runtime import ChainableUndefined as ChainableUndefined
+from .runtime import DebugUndefined as DebugUndefined
+from .runtime import make_logging_undefined as make_logging_undefined
+from .runtime import StrictUndefined as StrictUndefined
+from .runtime import Undefined as Undefined
+from .utils import clear_caches as clear_caches
+from .utils import is_undefined as is_undefined
+from .utils import pass_context as pass_context
+from .utils import pass_environment as pass_environment
+from .utils import pass_eval_context as pass_eval_context
+from .utils import select_autoescape as select_autoescape
 
-
-def load_ipython_extension(ipython: Any) -> None:
-    from .ipython import load_ipython_extension
-    load_ipython_extension(ipython)
-
-
-def get_cli_string(
-    path: Optional[str] = None,
-    action: Optional[str] = None,
-    key: Optional[str] = None,
-    value: Optional[str] = None,
-    quote: Optional[str] = None,
-):
-    """Returns a string suitable for running as a shell script.
-
-    Useful for converting a arguments passed to a fabric task
-    to be passed to a `local` or `run` command.
-    """
-    command = ['dotenv']
-    if quote:
-        command.append(f'-q {quote}')
-    if path:
-        command.append(f'-f {path}')
-    if action:
-        command.append(action)
-        if key:
-            command.append(key)
-            if value:
-                if ' ' in value:
-                    command.append(f'"{value}"')
-                else:
-                    command.append(value)
-
-    return ' '.join(command).strip()
-
-
-__all__ = ['get_cli_string',
-           'load_dotenv',
-           'dotenv_values',
-           'get_key',
-           'set_key',
-           'unset_key',
-           'find_dotenv',
-           'load_ipython_extension']
+__version__ = "3.1.4"
